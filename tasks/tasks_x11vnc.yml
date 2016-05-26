@@ -17,20 +17,15 @@
   - name: X11VNC | template /etc/init/x11vnc.conf
     template: src="{{role_dir}}/templates/upstart.conf.j2" dest="/etc/init/x11vnc.conf"
     become: yes
-    when: upstart_system = 'upstart'
+    when: upstart_system == "upstart"
     notify: restart x11vnc
     tags:
       - x11vnc
 
-  - name: X11VNC | template /etc/init/x11vnc.conf
+  - name: X11VNC | template /etc/systemd/system/x11vnc.service
     template: src="{{role_dir}}/templates/systemd.conf.j2" dest="/etc/systemd/system/x11vnc.service"
     become: yes
-    when: upstart_system = 'systemd'
+    when: upstart_system == "systemd"
     notify: restart x11vnc
     tags:
       - x11vnc
-
-
-/etc/systemd/system/x11vnc.service
-
-/etc/init/x11vnc.conf
