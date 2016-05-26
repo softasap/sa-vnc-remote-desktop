@@ -1,0 +1,4 @@
+[submodule "roles/sa-vnc-remote-desktop"]
+        path = roles/sa-vnc-remote-desktop
+        url = https://github.com/softasap/sa-vnc-remote-desktop.git
+

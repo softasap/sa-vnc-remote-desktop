@@ -1,0 +1,5 @@
+---
+# defaults file for sa-vnc-remote-desktop
+  root_dir: "{{role_path}}"
+  role_dir: "{{role_path}}"  
+  vnc_password: vnc

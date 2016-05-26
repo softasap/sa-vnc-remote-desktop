@@ -1,0 +1,36 @@
+---
+  - include: use/__detect_init_system.yml
+    when: upstart_system is not defined
+
+  - name: X11VNC | install
+    apt: pkg="x11vnc" state="present"
+    become: yes
+    tags:
+      - x11vnc
+
+  - name: X11VNC | configure password
+    shell: x11vnc -storepasswd {{vnc_password}} /etc/x11vnc.pass
+    become: yes
+    tags:
+      - x11vnc
+
+  - name: X11VNC | template /etc/init/x11vnc.conf
+    template: src="{{role_dir}}/templates/upstart.conf.j2" dest="/etc/init/x11vnc.conf"
+    become: yes
+    when: upstart_system = 'upstart'
+    notify: restart x11vnc
+    tags:
+      - x11vnc
+
+  - name: X11VNC | template /etc/init/x11vnc.conf
+    template: src="{{role_dir}}/templates/systemd.conf.j2" dest="/etc/systemd/system/x11vnc.service"
+    become: yes
+    when: upstart_system = 'systemd'
+    notify: restart x11vnc
+    tags:
+      - x11vnc
+
+
+/etc/systemd/system/x11vnc.service
+
+/etc/init/x11vnc.conf
