@@ -29,7 +29,9 @@ galaxy_info:
     - remote
     - desktop
     - vnc
+    - x11vnc
     - ubuntu
+
   #platforms:
   #- name: EL
   #  versions:
