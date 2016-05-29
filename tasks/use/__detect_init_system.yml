@@ -6,8 +6,10 @@
       elif [[ -f /etc/init.d/cron && ! -h /etc/init.d/cron ]]; then echo sysv-init;
       else echo UNKNOWN;
       fi
+    args:
+      executable: /bin/bash
     become: yes
     register: upstart_detect_raw
 
-  set_fact:
-    upstart_system: upstart_detect_raw.stdout
+  - set_fact:
+      upstart_system: "{{upstart_detect_raw.stdout}}"

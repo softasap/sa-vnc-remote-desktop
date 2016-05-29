@@ -1,2 +1,3 @@
 ---
 # tasks file for sa-vnc-remote-desktop
+  - include: tasks_x11vnc.yml
