@@ -9,7 +9,7 @@ Installs x11vnc server guardened by {{vnc_password}}
 
 
 Example of use:
-```
+```YAML
 
      - {
          role: "sa-vnc-remote-desktop"
@@ -18,16 +18,22 @@ Example of use:
 ```
 
 Advanced:
-```
+```YAML
      - {
          role: "sa-vnc-remote-desktop",
          vnc_password: "myverysecurevncpasswordyeah"
        }
 ```
 
+See box-example for standalone installation example
+
 Remarks
 1. Default vnc_password value is: 'vnc'.
 2. If you installed the sa-vnc-remote-desktop rule using the command
+
+
+Usage with ansible galaxy workflow
+----------------------------------
 
 
 `
@@ -36,7 +42,7 @@ Remarks
 
 the role will be available in the folder library\softasap.sa-vnc-remote-desktop.
 Please adjust the path accordingly.
-```
+```YAML
 
      - {
          role: "softasap.sa-vnc-remote-desktop",
@@ -44,3 +50,13 @@ Please adjust the path accordingly.
        }
 
 ```
+
+
+Copyright and license
+---------------------
+
+Code licensed under the [BSD 3 clause] (https://opensource.org/licenses/BSD-3-Clause) or the [MIT License] (http://opensource.org/licenses/MIT).
+
+Subscribe for roles updates at [FB] (https://www.facebook.com/SoftAsap/)
+
+
