@@ -28,12 +28,14 @@ Advanced:
 See box-example for standalone installation example
 
 Remarks
+
 1. Default vnc_password value is: 'vnc'.
-2. If you installed the sa-vnc-remote-desktop rule using the command
 
 
 Usage with ansible galaxy workflow
 ----------------------------------
+
+2. If you installed the sa-vnc-remote-desktop rule using the command
 
 
 `
