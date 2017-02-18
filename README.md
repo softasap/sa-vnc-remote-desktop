@@ -9,26 +9,38 @@ Installs x11vnc server guardened by {{vnc_password}}
 
 
 Example of use:
-
-<pre>
+```
 
      - {
          role: "sa-vnc-remote-desktop"
        }
 
-</pre>
+```
 
 Advanced:
-
-<pre>
-
-
+```
      - {
          role: "sa-vnc-remote-desktop",
          vnc_password: "myverysecurevncpasswordyeah"
        }
+```
+
+Remarks
+1. Default vnc_password value is: 'vnc'.
+2. If you installed the sa-vnc-remote-desktop rule using the command
 
 
-</pre>
+`
+   ansible galaxy install softasap.sa-vnc-remote-desktop
+`
 
+the role will be available in the folder library\softasap.sa-vnc-remote-desktop.
+Please adjust the path accordingly.
+```
 
+     - {
+         role: "softasap.sa-vnc-remote-desktop",
+         vnc_password: "myverysecurevncpasswordyeah"
+       }
+
+```
