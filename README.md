@@ -21,7 +21,8 @@ Advanced:
 ```YAML
      - {
          role: "sa-vnc-remote-desktop",
-         vnc_password: "myverysecurevncpasswordyeah"
+         vnc_password: "myverysecurevncpasswordyeah",
+         vnc_params: "-auth /root/.Xauthority -forever -loop -noxdamage -repeat -rfbauth /etc/x11vnc.pass -rfbport 5900 -shared -display :12 -xkb -bg -ncache 10 -ncache_cr"
        }
 ```
 
