@@ -14,6 +14,15 @@
     tags:
       - x11vnc
 
+  - name: X11VNC | configure .XAuthority
+    shell: "xauth generate {{vnc_display}} . trusted"
+    args:
+      chdir: ~
+    become: yes
+    become_user: "{{vnc_user}}"
+    tags:
+      - x11vnc      
+
   - name: X11VNC | template /etc/init/x11vnc.conf
     template: src="{{role_dir}}/templates/upstart.conf.j2" dest="/etc/init/x11vnc.conf"
     become: yes

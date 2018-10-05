@@ -2,6 +2,6 @@ start on login-session-start
 
 script
 
-/usr/bin/x11vnc -xkb -forever -auth /var/run/lightdm/root/:0 -display :0 -rfbauth /etc/x11vnc.pass -rfbport 5900 -bg -o /var/log/x11vnc.log
+/usr/bin/x11vnc {{vnc_params}}
 
 end script
