@@ -12,5 +12,6 @@
     register: upstart_detect_raw
     changed_when: False
 
-  - set_fact:
-      upstart_system: "{{upstart_detect_raw.stdout}}"
+  - name: Set fact for upstart system
+    set_fact:
+      upstart_system: "{{ upstart_detect_raw.stdout }}"
