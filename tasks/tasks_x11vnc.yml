@@ -15,10 +15,12 @@
       - x11vnc
 
   - name: X11VNC | configure .XAuthority
-    shell: "xauth generate {{vnc_display_no}} . trusted"
+    shell: "xauth generate :{{vnc_display_no}} . trusted"
     args:
       chdir: ~
     become: yes
+    environment:
+        XAUTHORITY: "{{ vnc_xauthority }}"
     become_user: "{{vnc_user}}"
     when: docker_test is not defined
     tags:
