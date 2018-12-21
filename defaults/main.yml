@@ -6,4 +6,4 @@
   vnc_display_no: 0
   vnc_password: vnc
   vnc_params: "-auth guess -forever -loop -noxdamage -repeat -rfbauth /etc/x11vnc.pass -rfbport 5900 -shared"
-
+  vnc_xauthority: /root/.Xauthority

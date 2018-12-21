@@ -4,6 +4,12 @@ After=multi-user.target
 
 [Service]
 Type=simple
+{% if vnc_display_no is defined %}
+Environment=DISPLAY=:{{ vnc_display_no }}
+{% endif %}
+{% if vnc_xauthority is defined %}
+Environment=XAUTHORITY={{ vnc_xauthority }}
+{% endif %}
 ExecStart=/usr/bin/x11vnc {{vnc_params}}
 
 [Install]
