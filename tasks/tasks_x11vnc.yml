@@ -6,7 +6,7 @@
     apt: pkg="x11vnc" state="present"
     retries: 3
     register: result
-    until: result.rc == 0
+    until: not result.failed
     become: yes
     tags:
       - x11vnc
