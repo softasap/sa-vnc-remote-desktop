@@ -4,12 +4,15 @@
 
   - name: X11VNC | install
     apt: pkg="x11vnc" state="present"
+    retries: 3
+    register: result
+    until: result.rc == 0
     become: yes
     tags:
       - x11vnc
 
   - name: X11VNC | configure password
-    command: x11vnc -storepasswd {{vnc_password}} /etc/x11vnc.pass
+    command: x11vnc -storepasswd {{ vnc_password }} /etc/x11vnc.pass
     args:
         creates: /etc/x11vnc.pass
     become: yes
@@ -17,19 +20,19 @@
       - x11vnc
 
   - name: X11VNC | configure .XAuthority
-    command: "xauth generate :{{vnc_display_no}} . trusted"
+    command: "xauth generate :{{ vnc_display_no }} . trusted"
     args:
       chdir: ~
     become: yes
     environment:
         XAUTHORITY: "{{ vnc_xauthority }}"
-    become_user: "{{vnc_user}}"
+    become_user: "{{ vnc_user }}"
     when: docker_test is not defined
     tags:
       - x11vnc
 
   - name: X11VNC | template /etc/init/x11vnc.conf
-    template: src="{{role_dir}}/templates/upstart.conf.j2" dest="/etc/init/x11vnc.conf"
+    template: src="{{ role_dir }}/templates/upstart.conf.j2" dest="/etc/init/x11vnc.conf"
     become: yes
     when: upstart_system == "upstart"
     notify: restart x11vnc
@@ -37,7 +40,7 @@
       - x11vnc
 
   - name: X11VNC | template /etc/systemd/system/x11vnc.service
-    template: src="{{role_dir}}/templates/systemd.conf.j2" dest="/etc/systemd/system/x11vnc.service"
+    template: src="{{ role_dir }}/templates/systemd.conf.j2" dest="/etc/systemd/system/x11vnc.service"
     become: yes
     when: upstart_system == "systemd"
     notify: restart x11vnc

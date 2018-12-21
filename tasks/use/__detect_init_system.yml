@@ -14,4 +14,4 @@
 
   - name: Set fact for upstart system
     set_fact:
-      upstart_system: "{{upstart_detect_raw.stdout}}"
+      upstart_system: "{{ upstart_detect_raw.stdout }}"
