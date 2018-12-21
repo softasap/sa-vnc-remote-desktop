@@ -9,13 +9,15 @@
       - x11vnc
 
   - name: X11VNC | configure password
-    shell: x11vnc -storepasswd {{vnc_password}} /etc/x11vnc.pass
+    command: x11vnc -storepasswd {{vnc_password}} /etc/x11vnc.pass
+    args:
+        creates: /etc/x11vnc.pass
     become: yes
     tags:
       - x11vnc
 
   - name: X11VNC | configure .XAuthority
-    shell: "xauth generate :{{vnc_display_no}} . trusted"
+    command: "xauth generate :{{vnc_display_no}} . trusted"
     args:
       chdir: ~
     become: yes
@@ -24,7 +26,7 @@
     become_user: "{{vnc_user}}"
     when: docker_test is not defined
     tags:
-      - x11vnc      
+      - x11vnc
 
   - name: X11VNC | template /etc/init/x11vnc.conf
     template: src="{{role_dir}}/templates/upstart.conf.j2" dest="/etc/init/x11vnc.conf"
