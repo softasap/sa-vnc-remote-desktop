@@ -2,11 +2,11 @@
 sudo: required
 
 env:
-  - distribution='ubuntu'
-    version='14.04'
-    init='/sbin/init'
-    run_opts=''
-    playbook='test.yml'
+  # - distribution='ubuntu'
+  #   version='14.04'
+  #   init='/sbin/init'
+  #   run_opts=''
+  #   playbook='test.yml'
   - distribution='ubuntu'
     version='16.04'
     init='/sbin/init'
@@ -14,6 +14,11 @@ env:
     playbook='test.yml'
   - distribution='ubuntu'
     version='18.04'
+    init='/sbin/init'
+    run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
+    playbook='test.yml'
+  - distribution='ubuntu'
+    version='20.04'
     init='/sbin/init'
     run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
     playbook='test.yml'
@@ -37,11 +42,41 @@ env:
 #    init='/usr/sbin/init'
 #    run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
 #    playbook='test.yml'
+#  - distribution='fedora'
+#    version='29'
+#    init='/usr/sbin/init'
+#    run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
+#    playbook='test.yml'
+#  - distribution='fedora'
+#    version='30'
+#    init='/usr/sbin/init'
+#    run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
+#    playbook='test.yml'
+#  - distribution='fedora'
+#    version='31'
+#    init='/usr/sbin/init'
+#    run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
+#    playbook='test.yml'
+#  - distribution='fedora'
+#    version='32'
+#    init='/usr/sbin/init'
+#    run_opts='--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
+#    playbook='test.yml'
+#  - distribution='centos' 
+#    version='8'
+#    init='/usr/lib/systemd/systemd'
+#    run_opts='--privileged'
+#    playbook='test.yml'
 #  - distribution='centos'
 #    version='7'
 #    init='/usr/lib/systemd/systemd'
 #    run_opts='--privileged'
 #    playbook='test.yml'
+  # - distribution: centos
+  #   version: 6
+  #   init: /sbin/init
+  #   run_opts: "--privileged"
+  #   playbook: test.yml
 #  - distribution: alpine
 #    version: 3.4
 #    init: /sbin/init
@@ -82,18 +117,16 @@ script:
   - 'echo sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} -t ${distribution}-${version}:ansible "${init}"'
   - 'sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} -t ${distribution}-${version}:ansible "${init}" > "${container_id}"'
   # Ansible syntax check.
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook} --syntax-check'
-
-  # Ansible linting
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-lint -c /etc/ansible/roles/role_under_test/.ansible-lint /etc/ansible/roles/role_under_test'
-
+  - 'sudo docker exec --tty "$(cat ${container_id})" env ANSIBLE_PYTHON_INTERPRETER=auto TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook} --syntax-check'
 
   # Test role.
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook}'
+  - 'sudo docker exec --tty "$(cat ${container_id})" env ANSIBLE_PYTHON_INTERPRETER=auto TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook}'
+#  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook}'
+
 
   # Test role idempotence.
   - >
-    sudo docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook}
+    sudo docker exec "$(cat ${container_id})" env ANSIBLE_PYTHON_INTERPRETER=auto env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/${playbook}
     | grep -q 'unreachable=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
